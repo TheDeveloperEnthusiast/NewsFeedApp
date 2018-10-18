@@ -33,15 +33,14 @@ public class GuardianAdapter extends ArrayAdapter<Guardian> {
      * Constructs a new {@link GuardianAdapter}.
      *
      * @param context of the app
-     * @param guardians is the list of earthquakes, which is the data source of the adapter
+     * @param guardians is the list of article, which is the data source of the adapter
      */
     public GuardianAdapter(Context context, List<Guardian> guardians) {
         super(context, 0, guardians);
     }
 
     /**
-     * Returns a list item view that displays information about the earthquake at the given position
-     * in the list of earthquakes.
+     * Returns a list item view that displays information about the articles
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -54,27 +53,26 @@ public class GuardianAdapter extends ArrayAdapter<Guardian> {
         }
 
         // Find the earthquake at the given position in the list of earthquakes
-        Guardian currentEarthquake = getItem(position);
+        Guardian article = getItem(position);
 
-        // Get the original location string from the Earthquake object,
-        // which can be in the format of "5km N of Cairo, Egypt" or "Pacific-Antarctic Ridge".
-        String titles = currentEarthquake.getTitle();
+        // Article title to display
+        String titles = article.getTitle();
 
-        //2nd string
-        long dates = currentEarthquake.getDate();
+        //Date of article to display
+        long dates = article.getDate();
 
-        //3rd
-        String sections = currentEarthquake.getSection();
+        //Section name of the article
+        String sections = article.getSection();
 
 
         // Find the TextView with view ID date
         TextView dateView = (TextView) listItemView.findViewById(R.id.date);
-        // Display the date of the current earthquake in that TextView
+        // Display the tile of the current article in that TextView
         dateView.setText(titles);
 
         // Find the TextView with view ID time
         TextView timeView = (TextView) listItemView.findViewById(R.id.time);
-        // Format the time string (i.e. "4:30PM")
+        // Display the section of the article
         timeView.setText(sections);
 
         // Return the list item view that is now showing the appropriate data

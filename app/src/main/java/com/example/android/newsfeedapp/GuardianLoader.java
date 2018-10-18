@@ -6,7 +6,7 @@ import android.content.Context;
 import java.util.List;
 
 /**
- * Loads a list of earthquakes by using an AsyncTask to perform the
+ * Loads a list of articles by using an AsyncTask to perform the
  * network request to the given URL.
  */
 public class GuardianLoader extends AsyncTaskLoader<List<Guardian>> {
@@ -42,7 +42,7 @@ public class GuardianLoader extends AsyncTaskLoader<List<Guardian>> {
             return null;
         }
 
-        // Perform the network request, parse the response, and extract a list of earthquakes.
+        // Perform the network request, parse the response, and extract a list of articles.
         List<Guardian> guardians = QueryUtils.fetchArticleData(mUrl);
         return guardians;
     }

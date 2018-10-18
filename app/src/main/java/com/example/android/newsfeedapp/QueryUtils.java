@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Helper methods related to requesting and receiving earthquake data from USGS.
+ * Helper methods related to requesting and receiving articles from The Guardian
  */
 public final class QueryUtils {
 
@@ -50,7 +50,7 @@ public final class QueryUtils {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
-        // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
+        // Extract relevant fields from the JSON response and create a list of {@link Guardian}s
         List<Guardian> guardians = extractFeatureFromJson(jsonResponse);
 
         // Return the list of {@link Guardian}s
@@ -99,7 +99,7 @@ public final class QueryUtils {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e);
+            Log.e(LOG_TAG, "Problem retrieving the article JSON results.", e);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -142,7 +142,7 @@ public final class QueryUtils {
             return null;
         }
 
-        // Create an empty ArrayList that we can start adding earthquakes to
+        // Create an empty ArrayList that we can start adding sports articles
         List<Guardian> guardians = new ArrayList<>();
 
         // Try to parse the JSON response string. If there's a problem with the way the JSON
@@ -151,40 +151,36 @@ public final class QueryUtils {
         try {
 
             // Create a JSONObject from the JSON response string
-            JSONObject baseJsonResponse = new JSONObject(guardianJSON);
+            JSONObject baseObject = new JSONObject(guardianJSON);
 
-            // Extract the JSONArray associated with the key called "features",
-            // which represents a list of features (or earthquakes).
-            JSONArray guardianArray = baseJsonResponse.getJSONArray("response");
+            // Extract the JSONArray associated with the key called "response",
+            JSONObject responseObject = baseObject.getJSONObject("response");
 
-            // For each earthquake in the earthquakeArray, create an {@link Earthquake} object
-            for (int i = 0; i < guardianArray.length(); i++) {
+            // Extract the JSONObject associated with the key called "results"
+            JSONArray resultsArray = responseObject.getJSONArray("results");
 
-                // Get a single earthquake at position i within the list of earthquakes
-                JSONObject currentEarthquake = guardianArray.getJSONObject(i);
+            // For each result in the guardianArray, create an {@link Guardian} object
+            for (int i = 0; i < resultsArray.length(); i++) {
 
-                // For a given earthquake, extract the JSONObject associated with the
-                // key called "properties", which represents a list of all properties
-                // for that earthquake.
-                JSONObject properties = currentEarthquake.getJSONObject("results");
+                // Get a single result at position i within the list of results
+                JSONObject results = resultsArray.getJSONObject(i);
 
-                // Extract the value for the key called "mag"
-                String title = properties.getString("webTitle");
+                // Extract the value for the key called "webTitle"
+                String title = results.getString("webTitle");
 
-                // Extract the value for the key called "place"
-               // long date = properties.getLong("webPublicationDate");
+                // Extract the value for the key called "webPublicationDate"
+                long date = results.getLong("webPublicationDate");
 
-                // Extract the value for the key called "time"
-                String section = properties.getString("sectionName");
+                // Extract the value for the key called "sectionName"
+                String section = results.getString("sectionName");
 
                 // Extract the value for the key called "url"
-                String url = properties.getString("url");
+                String url = results.getString("url");
 
-                // Create a new {@link Guardian} object with the magnitude, location, time,
-                // and url from the JSON response.
+                // Create a new {@link Guardian} object with the title,section and url from the JSON response.
                 Guardian guardian = new Guardian(title,section, url);
 
-                // Add the new {@link Earthquake} to the list of earthquakes.
+                // Add the new {@link Guardian} to the list of articles
                 guardians.add(guardian);
             }
 
@@ -195,7 +191,7 @@ public final class QueryUtils {
             Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
         }
 
-        // Return the list of earthquakes
+        // Return the list of articles
         return guardians;
     }
 

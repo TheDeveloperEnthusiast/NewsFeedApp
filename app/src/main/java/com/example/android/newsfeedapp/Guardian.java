@@ -1,7 +1,7 @@
 package com.example.android.newsfeedapp;
 
 /**
- * An {@link Guardian} object contains information related to a single earthquake.
+ * An {@link Guardian} object contains information related to a guardian article
  */
 public class Guardian {
 
@@ -20,10 +20,9 @@ public class Guardian {
     /**
      * Constructs a new {@link Guardian} object.
      *
-     * @param title is the magnitude (size) of the earthquake
-     * @param section is the time in milliseconds (from the Epoch) when the
-     *                           earthquake happened
-     * @param url is the website URL to find more details about the earthquake
+     * @param title is the name of the article
+     * @param section is the name of the section of the article(Sports)
+     * @param url is the website URL to find more details about the article
      */
     public Guardian(String title, String section, String url) {
         mTitle = title;
@@ -33,28 +32,28 @@ public class Guardian {
     }
 
     /**
-     * Returns the magnitude of the earthquake.
+     * Returns the title of the article
      */
     public String getTitle() {
         return mTitle;
     }
 
     /**
-     * Returns the location of the earthquake.
+     * Returns the section genre of the article
      */
     public String getSection() {
         return mSection;
     }
 
     /**
-     * Returns the time of the earthquake.
+     * Returns the time of the article
      */
     public long getDate() {
         return mDate;
     }
 
     /**
-     * Returns the website URL to find more information about the earthquake.
+     * Returns the website URL to find more information about the article
      */
     public String getUrl() {
         return mUrl;
